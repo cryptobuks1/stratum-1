@@ -38,8 +38,6 @@ stratum_cc_binary(
         "//stratum/hal/lib/barefoot:bf_switch",
         "//stratum/hal/lib/common:hal",
         "//stratum/hal/lib/phal:phal_sim",
-        "//stratum/hal/lib/phal/onlp:onlp_wrapper",
-        "//stratum/hal/lib/phal/onlp:onlpphal",
         "//stratum/hal/lib/pi:pi_node_bf",
         "//stratum/lib/security:auth_policy_checker",
         "//stratum/lib/security:credentials_manager",
@@ -48,7 +46,13 @@ stratum_cc_binary(
         "@local_barefoot_bin//:bf_drivers",
         "@local_barefoot_bin//:bf_sys",
         "@local_barefoot_bin//:bf_utils",
-    ],
+    ] + select({
+        "//:stratum_phal_sim_profile": [],
+        "//conditions:default": [
+            "//stratum/hal/lib/phal/onlp:onlp_wrapper",
+            "//stratum/hal/lib/phal/onlp:onlpphal"
+        ],
+    }),
     data = [
         "tofino_skip_p4.conf",
         "tofino_skip_p4_no_bsp.conf",
@@ -56,4 +60,8 @@ stratum_cc_binary(
         "platforms/x86-64-delta-ag9064v1-r0.json",
         "platforms/x86-64-inventec-d5254-r0.json"
     ],
+    defines = select({
+        "//:stratum_phal_sim_profile": ["PHAL_SIM"],
+        "//conditions:default": [],
+    })
 )

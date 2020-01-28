@@ -27,9 +27,12 @@ int switch_pci_sysfs_str_get(char *name, size_t name_size);
 #include "stratum/glue/init_google.h"
 #include "stratum/glue/logging.h"
 #include "stratum/hal/lib/common/hal.h"
+#include "stratum/hal/lib/phal/phal_sim.h"
+#ifndef PHAL_SIM
 #include "stratum/hal/lib/phal/onlp/onlp_wrapper.h"
 #include "stratum/hal/lib/phal/onlp/onlpphal.h"
-#include "stratum/hal/lib/phal/phal_sim.h"
+#endif
+
 #include "stratum/hal/lib/barefoot/bf_chassis_manager.h"
 #include "stratum/hal/lib/barefoot/bf_pal_wrapper.h"
 #include "stratum/hal/lib/barefoot/bf_switch.h"
@@ -153,13 +156,18 @@ Main(int argc, char* argv[]) {
   std::unique_ptr<DeviceMgr> device_mgr(new DeviceMgr(unit));
 
   auto pi_node = pi::PINode::CreateInstance(device_mgr.get(), unit);
-  auto* onlp_wrapper = phal::onlp::OnlpWrapper::CreateSingleton();
   PhalInterface* phal_impl;
+#ifdef PHAL_SIM
+  phal_impl = PhalSim::CreateSingleton();
+#else
+  auto* onlp_wrapper = phal::onlp::OnlpWrapper::CreateSingleton();
   if (FLAGS_bf_sim) {
     phal_impl = PhalSim::CreateSingleton();
   } else {
     phal_impl = phal::onlp::OnlpPhal::CreateSingleton(onlp_wrapper);
   }
+#endif
+
   std::map<int, pi::PINode*> unit_to_pi_node = {
     {unit, pi_node.get()},
   };

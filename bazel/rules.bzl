@@ -21,3 +21,4 @@ load("//bazel/rules:platform_rules.bzl",
      "stratum_platform_select", "stratum_platform_filter", "stratum_platform_alias")
 load("//bazel/rules:package_rule.bzl", "stratum_package")
 load(":defs.bzl", "EMBEDDED_ARCHES", "HOST_ARCHES", "STRATUM_INTERNAL")
+load("//bazel/rules:profiles.bzl", "stratum_profiles")

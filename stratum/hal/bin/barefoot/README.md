@@ -115,6 +115,13 @@ the SDE version by using `--define` flag if you need to build with older version
 bazel build //stratum/hal/bin/barefoot:stratum_bf [--define sde_ver=8.9.2]
 ```
 
+## Building the binary without ONLP support
+
+The `--define profile=phal_sim` flag tells Stratum not to use the Phal ONLP
+implementation, but `PhalSim`, a "fake" Phal implementation, instead. Use this
+flag when you are using a vendor-provided BSP or running Stratum with the
+Tofino software model.
+
 ## Running the binary (with BSP or Tofino software model)
 
 ```
@@ -126,17 +133,13 @@ sudo LD_LIBRARY_PATH=$BF_SDE_INSTALL/lib \
        --persistent_config_dir=<config dir> \
        --forwarding_pipeline_configs_file=<config dir>/p4_pipeline.pb.txt \
        --chassis_config_file=<config dir>/chassis_config.pb.txt \
-       --write_req_log_file=<config dir>/p4_writes.pb.txt \
-       --bf_sim
+       --write_req_log_file=<config dir>/p4_writes.pb.txt
 ```
 
 For a sample `chassis_config.pb.txt` file, see sample_config.pb.txt in this
 directory. *Do not use the ucli or the Thrift PAL RPC service for port
 configuration.* You may use the ucli to check port status (`pm show`).
 
-The `--bf_sim` flag tells Stratum not to use the Phal ONLP implementation, but
-`PhalSim`, a "fake" Phal implementation, instead. Use this flag when you are
-using a vendor-provided BSP or running Stratum with the Tofino software model.
 
 ## Running the binary in BSP-less mode
 
