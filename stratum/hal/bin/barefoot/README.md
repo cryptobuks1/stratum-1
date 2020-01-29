@@ -117,7 +117,7 @@ bazel build //stratum/hal/bin/barefoot:stratum_bf [--define sde_ver=8.9.2]
 
 ## Building the binary without ONLP support
 
-The `--define profile=phal_sim` flag tells Stratum not to use the Phal ONLP
+The `--define profile=phal_sim` flag tells Bazel not to build with the ONLP Phal
 implementation, but `PhalSim`, a "fake" Phal implementation, instead. Use this
 flag when you are using a vendor-provided BSP or running Stratum with the
 Tofino software model.
