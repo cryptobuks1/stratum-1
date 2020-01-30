@@ -122,6 +122,10 @@ implementation, but `PhalSim`, a "fake" Phal implementation, instead. Use this
 flag when you are using a vendor-provided BSP or running Stratum with the
 Tofino software model.
 
+```
+bazel build //stratum/hal/bin/barefoot:stratum_bf --define profile=phal_sim [--define sde_ver=8.9.2]
+```
+
 ## Running the binary (with BSP or Tofino software model)
 
 ```
